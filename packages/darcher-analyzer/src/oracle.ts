@@ -1,5 +1,6 @@
 /*
 This file defines test oracles for on-chain-off-chain synchronization bugs
+这个文件定义了链上-链下同步错误的测试准则
  */
 import {LogicalTxState, TransactionLog} from "./analyzer";
 import {ConsoleErrorMsg, ContractVulReport, DBContent, TableContent, TxErrorMsg,} from "@darcher/rpc";
@@ -17,11 +18,13 @@ export enum VulnerabilityType {
 
 /**
  * Each oracle instance should only be used for one transaction.
+ * 每个oracle实例只能用于一个事务。
  */
 export interface Oracle {
 
     /**
      * should return whether this transaction's execution violates the oracle (is buggy)
+     * 应该返回这个事务的执行是否违反oracle (is buggy)
      */
     isBuggy(): boolean;
 
@@ -29,6 +32,7 @@ export interface Oracle {
 
     /**
      * This method should be called only when transaction is at each transaction state.
+     * 这个方法应该只在事务处于每个事务状态时调用。
      * @param txState The transaction state that transaction is currently at
      * @param dbContent The database content (after change in response to the transaction state) in dapp
      * @param txErrors The tx execution error during this tx state
@@ -119,6 +123,9 @@ export function analyzeTransactionLog(oracle: Oracle, log: TransactionLog): Repo
  * Database change oracle
  * 1. DBContent in tx pending state should be equal to that in tx removed state (High).
  * 2. DBContent should not be changed in pending state (Low).
+ * 数据库更改oracle
+ * 1。DBContent在tx pending状态应该等于在tx removed状态(High)。
+ * 2。DBContent不应该在挂起状态(Low)中更改。
  */
 export class DBChangeOracle implements Oracle {
     private readonly txHash: string;
@@ -142,6 +149,7 @@ export class DBChangeOracle implements Oracle {
     getBugReports(): Report[] {
         let reports: Report[] = [];
         // we will consider DBContent at CREATED state to be the base-line
+        //我们将DBContent的创建状态作为基线
         let created: DBContent = this.contentMap[LogicalTxState.CREATED];
         let pending: DBContent = this.contentMap[LogicalTxState.PENDING];
         let confirmed: DBContent = this.contentMap[LogicalTxState.CONFIRMED];
@@ -198,6 +206,7 @@ export class DBChangeOracle implements Oracle {
 
 /**
  * Bug reports for UnreliableTxHash type. Persistent changes shouldn't be made at pending state
+ * unreliablexhash类型的错误报告。持久更改不应该在挂起状态下进行
  */
 class UnreliableTxHashReport implements Report {
     private readonly _txHash: string;
@@ -270,9 +279,12 @@ export type FieldPathSet = ((string | RegExp)[] | string)[];
 
 export interface TableContentDiffFilter {
     // specify the fields needed to compare in DBContents, if not specified, compare all
+    //指定DBContents中需要比较的字段，如果没有指定，则比较所有字段
     includes?: FieldPathSet;
     // specify the fields needed to be excluded from comparison, if not specified, exclude none
     // rules in excludes can exclude the fields specified in includes
+    //指定需要从比较中排除的字段，如果没有指定，则不排除任何字段
+    // exclude中的规则可以排除include中指定的字段
     excludes?: FieldPathSet;
 }
 
@@ -290,6 +302,7 @@ export interface DBContentDiffFilter {
 
 /**
  * This class represent the difference between two DBContent instance.
+ * 这个类表示两个DBContent实例之间的区别。
  */
 export class DBContentDiff {
     public readonly from: DBContent;
@@ -307,12 +320,14 @@ export class DBContentDiff {
 
     /**
      * Calculate the difference between two DBContent instance.
+     * 计算两个DBContent实例之间的差异。
      */
     private calDiff() {
         this._tableDiffs = {};
         this.from.getTablesMap().forEach((fromTable, tableName) => {
             if (!this.to.getTablesMap().has(tableName)) {
                 // for now, we suppose no table will be created or deleted during execution
+                //目前，我们假设在执行过程中不会创建或删除表
                 return;
             }
             let toTable = this.to.getTablesMap().get(tableName);
@@ -385,6 +400,7 @@ export class DBContentDiff {
 
 /**
  * This class represent the difference between two TableContent instance (must be with same table name).
+ * 这个类表示两个表名相同的实例之间的区别。
  */
 export class TableContentDiff {
     public readonly tableName: string;
@@ -406,6 +422,7 @@ export class TableContentDiff {
 
     /**
      * Calculate the difference between two TableContent instance.
+     * 计算两个表内容实例之间的差异。
      */
     private calDiff() {
         let fromRecords: TableRecord[] = [];
@@ -437,6 +454,7 @@ export class TableContentDiff {
 
     /**
      * Whether no difference or not
+     * 是否没有区别
      */
     public zero(): boolean {
         return this._addedRecords.length === 0 && this._deletedRecords.length === 0 && this._changedRecords.length === 0;
@@ -501,6 +519,7 @@ export class TableRecord {
 
     /**
      * If another TableRecord has the same key as this.
+     * 如果另一个表记录具有与此相同的键。
      * @param another
      */
     public sameKeyAs(another: TableRecord): boolean {
@@ -549,6 +568,7 @@ export class TableRecord {
                 if (reference.hasOwnProperty(key)) {
                     if (selectPath.length == 1) {
                         // end of include path, add the field
+                        // include路径结束，添加字段
                         data[key] = reference[key];
                     } else {
                         if (!data.hasOwnProperty(key)) {
@@ -563,6 +583,7 @@ export class TableRecord {
         const selectFields = (data: { [key: string]: string }, includes: FieldPathSet): { [key: string]: string } => {
             if (!includes) {
                 // if includes are not specified, include all
+                // 如果没有指定include，则包含所有
                 return _.cloneDeep(data);
             }
             let newData = {};
@@ -579,6 +600,7 @@ export class TableRecord {
 
         if (this.filter.includes) {
             // includes are specified, we construct thisData and anotherData using included fields
+            // include被指定，我们使用include字段构造thisData和另一个data
             thisData = selectFields(thisData, this.filter.includes);
         }
 

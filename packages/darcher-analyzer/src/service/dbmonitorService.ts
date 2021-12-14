@@ -26,7 +26,7 @@ import {EventEmitter} from "events";
 export class DbMonitorService implements Service {
     private readonly logger: Logger;
     private readonly wsPort: number; // grpc port is not needed because grpc is opened upstream
-
+    // 不需要GRPC端口，因为GRPC是在上游打开的
     public readonly wsTransport: DBMonitorServiceViaWebsocket;
     public readonly grpcTransport: DBMonitorServiceViaGRPC;
 
@@ -78,6 +78,8 @@ export class DbMonitorService implements Service {
 /**
  * DB monitor service, to get database data from dapp
  * Since grpc does not support bidirectional stream in browser, we use websocket as transport to simulate bidirectional stream
+ 数据库监控服务，从dapp获取数据库数据
+ *由于grpc在浏览器中不支持双向流，我们使用websocket作为传输来模拟双向流
  */
 class DBMonitorServiceViaWebsocket implements Service {
     private readonly logger: Logger;
@@ -144,6 +146,7 @@ class DBMonitorServiceViaWebsocket implements Service {
 
     /**
      * message handler of reverse RPC reply
+     * 反向RPC应答的消息处理程序
      * @param message reply from dbmonitor
      */
     private onMessage = (message: any) => {
@@ -251,6 +254,7 @@ class DBMonitorServiceViaGRPC implements IDBMonitorServiceServer, Service {
 
     /**
      * Establish getAllDataControl reverse rpc
+     * 建立getAllDataControl反向rpc
      * @param call
      */
     getAllDataControl(call: ServerDuplexStream<GetAllDataControlMsg, GetAllDataControlMsg>): void {

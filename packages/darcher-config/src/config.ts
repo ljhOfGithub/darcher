@@ -6,7 +6,7 @@ export enum ControllerOptions {
 }
 
 export interface ClusterConfig {
-    analyzerAddress?: string // address to the analyzer grpc endpoint
+    analyzerAddress?: string // address to the analyzer grpc endpoint指向分析器GRPC端点的地址
     ethmonitorPort: number
     controller: ControllerOptions
     genesisFile: string
@@ -26,7 +26,7 @@ export interface AnalyzerConfig {
     traceStorePort?: number,
     txStateChangeProcessTime?: number // in milliseconds
 }
-
+// 数据库设置
 export enum DBOptions {
     indexedDB = "indexedDB",
     mongoDB = "mongoDB",
@@ -39,10 +39,11 @@ export interface DBMonitorConfig {
     dbName: string
     dbAddress: string
     // only used in html mode DApp state
+    //只在html模式DApp状态下使用
     elements?: { name: string, xpath: string }[]
     js?: string,
 }
-
+// 总设置
 export interface Config {
     analyzer: AnalyzerConfig
     clusters: ClusterConfig[]

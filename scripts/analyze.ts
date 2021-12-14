@@ -204,6 +204,7 @@ export function analyzeAll(roundDirs: string[], dbFilter: DBContentDiffFilter, r
                 const log = JSON.parse(logContent.toString()) as TransactionLog;
                 if (!log.stack || log.stack.length == 1) {
                     // ignore those transaction without stack trace
+                    //忽略那些没有堆栈跟踪的事务
                     continue;
                 }
                 console.log("Collecting transaction", file);
@@ -254,6 +255,7 @@ export function analyzeAll(roundDirs: string[], dbFilter: DBContentDiffFilter, r
     });
 
 // filter duplicate
+//过滤重复的
     const transactionGroups = _.groupBy(analysisSet, analysis => {
         if (typeof analysis.log.stack === "string") {
             return analysis.log.stack;

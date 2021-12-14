@@ -61,7 +61,7 @@ log4js.configure({
         }
     }
 })
-
+// 日志记录
 export class Logger extends EventEmitter {
 
     private logger: log4js.Logger;

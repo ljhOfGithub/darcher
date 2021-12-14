@@ -29,7 +29,7 @@ export type PromiseKit<T> = {
 export const sleep: (ms: number) => Promise<void> = async (ms: number): Promise<void> => {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-
+// 哈希值的格式化
 export function prettifyHash(hash: string): string {
     if (!hash) {
         return hash;
