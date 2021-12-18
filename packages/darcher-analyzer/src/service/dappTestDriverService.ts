@@ -111,6 +111,7 @@ export class DappTestDriverService implements IDAppTestDriverServiceServer, Serv
 
     /**
      * Tell dapp driver to refresh page via dappDriverControl reverse rpc
+     * 告诉dapp驱动程序通过dappDriverControl反向rpc刷新页面
      */
     public async refreshPage(): Promise<void> {
         let req = new DAppDriverControlMsg();

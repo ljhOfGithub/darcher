@@ -81,12 +81,15 @@ export function traceSendAsync(method: string, params: any[], callback: Function
             apply(target, thisArg, argArray) {
                 if (method === 'eth_estimateGas') {
                     // save gas
+                    // 保存gas
                     traceCache.params[0].gas = argArray[1];
                     // save to history, in case there is a transaction use this call later
+                    // 保存到历史记录，如果有一个交易，稍后使用这个调用
                     traceCache.stack = traceObj.stack.split(/\n/).map(item => item.trim()).filter(item => item.length > 0 && item !== "Error");
                     GLOBAL.traceHistories.push(traceCache);
                 } else if (['eth_sendTransaction', 'eth_sendRawTransaction'].includes(method)) {
                     // search trace history for a possible estimateGas cache (which is more precise)
+                    // 搜索一个可能的estimateGas缓存的跟踪历史(更精确)
                     for (let i = GLOBAL.traceHistories.length - 1; i >= 0; i--) {
                         const history = GLOBAL.traceHistories[i];
                         if (history.method === 'eth_estimateGas' &&
@@ -96,17 +99,21 @@ export function traceSendAsync(method: string, params: any[], callback: Function
                             history.params[0].data === params[0].data
                         ) {
                             // delete this from history
+                            //从历史中删除它
                             GLOBAL.traceHistories = GLOBAL.traceHistories.filter(value => value !== history);
                             // use the stack trace of this cache
+                            //使用该缓存的栈trace
                             traceCache.stack = history.stack;
                             break;
                         }
                     }
                     if (!traceCache.stack) {
                         // no history found, use current one
+                        //没有发现历史记录，使用当前的
                         traceCache.stack = traceObj.stack.split(/\n/).map(item => item.trim()).filter(item => item.length > 0 && item !== "Error");
                     }
                     // send trace to server
+                    // 发送trace到服务器，trace包括当前的栈等
                     const trace = {
                         hash: typeof argArray[1] === "string" ? argArray[1] : argArray[1].result,
                         stack: traceCache.stack,

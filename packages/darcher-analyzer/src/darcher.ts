@@ -1,5 +1,6 @@
 /**
  * Darcher listen for new txs and start a analyzer for each tx
+ * Darcher监听新的tx并为每个tx启动一个分析器
  */
 import {DarcherServer, EthmonitorController} from "./service";
 import {
@@ -36,6 +37,7 @@ export class Darcher {
     private readonly analyzers: { [txHash: string]: Analyzer } = {};
     public currentAnalyzer: Analyzer | null;
     private currentChildAnalazers: Analyzer[] | null; // the analyzers created during current analyzer is being processed
+    // 在当前分析器被处理期间创建分析器
 
     // ethmonitorControllerService handler
     private readonly ethmonitorController: EthmonitorController;
@@ -82,6 +84,7 @@ export class Darcher {
 
     /**
      * Start the Darcher and returns a promise which resolves when the darcher is started and rejects when error
+     * 启动Darcher并返回一个承诺，该承诺在Darcher启动时解决，并在错误时拒绝
      */
     public async start(): Promise<void> {
         await this.traceStore.start()
@@ -141,6 +144,7 @@ export class Darcher {
         if (msg.getHash() in this.analyzers) {
             await this.analyzers[msg.getHash()].onTxFinished(msg);
             // we set current Analyzer 1 sec later, in case some transactions comes as a child of current transaction
+            //我们在1秒后设置当前分析器，以防一些事务作为当前事务的子事务出现
             setTimeout(() => {
                 if (this.currentAnalyzer && msg.getHash() === this.currentAnalyzer.txHash) {
                     this.currentAnalyzer = null;
@@ -178,6 +182,7 @@ export class Darcher {
             }
         } else {
             // no current analyzer, select from pending analyzers
+            // 没有当前的分析仪，从pending的分析器选择
             for (const tx in this.analyzers) {
                 const analyzer = this.analyzers[tx];
                 if (!analyzer.finished && msg.getCandidateHashesList().includes(tx)) {

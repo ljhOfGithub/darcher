@@ -846,6 +846,7 @@ export class ConsoleErrorOracle implements Oracle {
 
 /**
  * Bug reports for ConsoleError type
+ * 控制台错误类型的错误报告
  */
 class ConsoleErrorReport implements Report {
     private readonly _txHash: string;

@@ -37,6 +37,7 @@ export class TraceStore {
                 }
                 this.logger.info("Save transaction trace", {tx: prettifyHash(msg.hash)});
                 // notify client the transaction has been received
+                // 通知客户端事务已被接收
                 ws.send("");
             });
             ws.on("close", () => {

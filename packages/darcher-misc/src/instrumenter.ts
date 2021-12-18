@@ -80,8 +80,10 @@ function _instrumentWeb3CoreMethod(file: string, instrumentedPack: string): [boo
     if (instrumented) {
         const result = generate(ast, {}, code);
         // save previous one as a copy
+        //将前一个保存为副本
         fs.writeFileSync(file + ".pre-instrument", code);
         // copy instrumented module
+        //复制仪表模块
         fs.copyFileSync(instrumentedPack, path.join(path.dirname(file), "trace-instrument.js"));
         // saved instrumented code
         fs.writeFileSync(file, result.code);
