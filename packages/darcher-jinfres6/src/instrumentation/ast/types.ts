@@ -2,7 +2,7 @@ export interface Node {
     type: string
 }
 
-export type BindingPattern = ArrayPattern | ObjectPattern;
+export type BindingPattern = ArrayPattern | ObjectPattern;//定义一个新类型，包含ArrayPattern和ObjectPattern类型共有的成员
 
 export type Expression = ThisExpression | Identifier | Literal |
     ArrayExpression | ObjectExpression | FunctionExpression | ArrowFunctionExpression | ClassExpression |
@@ -12,8 +12,8 @@ export type Expression = ThisExpression | Identifier | Literal |
     YieldExpression | AssignmentExpression | SequenceExpression;
 
 export interface ArrayPattern extends Node {
-    type: 'ArrayPattern';
-    elements: ArrayPatternElement[];
+    type: 'ArrayPattern'; // 数组模式，type是接口的变量，不是type关键字，表示ast节点的类型
+    elements: ArrayPatternElement[]; //定义数组类型
 }
 
 export type ArrayPatternElement = AssignmentPattern | Identifier | BindingPattern | RestElement | null;
@@ -21,7 +21,7 @@ export type ArrayPatternElement = AssignmentPattern | Identifier | BindingPatter
 export interface AssignmentPattern extends Node {
     type: 'AssignmentPattern';
     left: Identifier | BindingPattern;
-    right: Expression;
+    right: Expression; 
 }
 
 export interface ObjectPattern extends Node {
@@ -60,7 +60,7 @@ export interface ObjectExpression extends Node {
 export interface Property extends Node {
     type: 'Property';
     key: Expression;
-    computed: boolean;
+    computed: boolean; // 
     value: Expression | null;
     kind: 'get' | 'set' | 'init';
     method: false;

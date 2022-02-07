@@ -66,7 +66,7 @@ export async function loadConfig(configPath: string): Promise<Config> {
 }
 
 /**
- * Update the content in a json file, according to the rules defined by updateFunc.
+ * Update the content in a json file, according to the rules defined by updateFunc.根据updateFunc定义的规则更新json文件的内容
  * If the json file does not exist, it will be created.
  * An error will be thrown if the file is not valid json.
  * @param jsonFilePath

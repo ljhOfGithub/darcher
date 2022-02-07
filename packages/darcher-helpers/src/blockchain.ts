@@ -9,10 +9,10 @@ import axios from "axios";
 import {ETHMONITOR_PATH, GETH_PATH} from "./defines";
 import * as fs from "fs";
 
-// this script starts ethmonitor clusters according to the config in @darcher/config
+// this script starts ethmonitor clusters according to the config in @darcher/config 根据设置启动监视器集群
 
 /**
- * Blockchain Cluster consists of a Ethmonitor and two geth nodes (DOER and TALKER).
+ * Blockchain Cluster consists of a Ethmonitor and two geth nodes (DOER and TALKER).集群由一个监视器和两个geth节点组成
  * A cluster acts as a whole blockchain network to handle Ethereum transactions with reorganization features.
  */
 export class BlockchainCluster {
@@ -23,7 +23,7 @@ export class BlockchainCluster {
     private talkerPID: number;
 
     /**
-     * The cluster is constructed with cluster configurations
+     * The cluster is constructed with cluster configurations 
      * @param config ClusterConfig defined in @darcher/config
      */
     constructor(config: ClusterConfig) {
@@ -42,7 +42,7 @@ export class BlockchainCluster {
     }
 
     /**
-     * Reset the cluster, delete all data in the blockchain and re-initialize the blockchain
+     * Reset the cluster, delete all data in the blockchain and re-initialize the blockchain 重置集群，删除区块链的所有数据，重新初始化区块链
      */
     public reset(): boolean {
         if (!BlockchainCluster.testAndMakeDir(this.config.dir)) {
@@ -88,9 +88,9 @@ export class BlockchainCluster {
     }
 
     /**
-     * Start the blockchain cluster in a deployment mode. Development mode will open clusters with nodes always connected and without ethmonitor.
-     * @param background start in the background
-     * @return if start in background, return value will be a promise of PIDs of ethmonitor, doer and talker; otherwise return promise of boolean.
+     * Start the blockchain cluster in a deployment mode. Development mode will open clusters with nodes always connected and without ethmonitor.在应用模式开始区块链集群，开发模式的集群没有监视器
+     * @param background start in the background 在该环境下开启
+     * @return if start in background, return value will be a promise of PIDs of ethmonitor, doer and talker; otherwise return promise of boolean. 
      */
     public async deploy(background: boolean = false): Promise<boolean | { doerPID: number, talkerPID: number }> {
         if (!BlockchainCluster.testAndMakeDir(this.config.dir)) {
@@ -344,7 +344,7 @@ export class BlockchainCluster {
     }
 
     /**
-     * Stop the cluster processes. This only takes effect when cluster is started/deployed at background.
+     * Stop the cluster processes. This only takes effect when cluster is started/deployed at background.停止集群进程，当集群在background开始/部署时有效
      */
     public async stop() {
         for (let pid of [this.ethmonitorPID, this.doerPID, this.talkerPID]) {
@@ -380,7 +380,7 @@ export function startDBMonitor(darcher: AnalyzerConfig, dbMonitor: DBMonitorConf
 }
 
 /**
- * Get a list of account addresses stored in darcher/keystore
+ * Get a list of account addresses stored in darcher/keystore 存储好的账户地址列表
  */
 export function getPredefinedAccounts(): string[] {
     return fs.readdirSync(path.join(__dirname, "..", "..", "..", "keystore"))

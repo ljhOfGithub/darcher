@@ -29,7 +29,7 @@ export class ReverseRPCServer<ReqT extends Identifiable, RespT extends Identifia
     }
 
     /**
-     * Serve will do serve the reverse rpc using the handler provide.
+     * Serve will do serve the reverse rpc using the handler provide.使用提供的handler反转rpc
      * This method will returns a promise which resolves when the stream on which reverse rpc works closes
      * and rejects when the stream gives any error.
      * @param handler

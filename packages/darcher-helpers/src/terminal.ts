@@ -1,5 +1,5 @@
 /*
-This module defines helpers for uses of terminal, including execute commands in new terminal tab and so on.
+This module defines helpers for uses of terminal, including execute commands in new terminal tab and so on.定义终端使用的助手，包括在新终端标签执行指令等
  */
 import * as shell from "shelljs";
 import * as os from "os";
@@ -156,9 +156,9 @@ export class TerminalWindow {
 /**
  * Execute the given command at a new terminal tab
  * @param cmd the command to be executed
- * @param tabTitle the title of the tab
- * @param w whether to open tab in a new window
- * @param d working direction of the command
+ * @param tabTitle the title of the tab 标签页的title
+ * @param w whether to open tab in a new window 是否开启新窗口
+ * @param d working direction of the command 
  */
 function executeInNewTab(cmd: Command, w: boolean = false, d: string = undefined, tabTitle: string = undefined) {
     const osType = os.type();

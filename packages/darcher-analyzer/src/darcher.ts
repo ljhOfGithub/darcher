@@ -36,7 +36,7 @@ export class Darcher {
 
     private readonly analyzers: { [txHash: string]: Analyzer } = {};
     public currentAnalyzer: Analyzer | null;
-    private currentChildAnalazers: Analyzer[] | null; // the analyzers created during current analyzer is being processed
+    private currentChildAnalazers: Analyzer[] | null; // the analyzers created during current analyzer is being processed 现在的分析器正在运行，其他分析器可以被创建
 
     // ethmonitorControllerService handler
     private readonly ethmonitorController: EthmonitorController;
