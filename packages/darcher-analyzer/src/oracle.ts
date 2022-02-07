@@ -201,7 +201,7 @@ export class DBChangeOracle implements Oracle {
 }
 
 /**
- * Bug reports for UnreliableTxHash type. Persistent changes shouldn't be made at pending state
+ * Bug reports for UnreliableTxHash type. Persistent changes shouldn't be made at pending state 不能在pending状态进行永久的变化
  */
 class UnreliableTxHashReport implements Report {
     private readonly _txHash: string;
@@ -273,9 +273,9 @@ class DataInconsistencyReport implements Report {
 export type FieldPathSet = ((string | RegExp)[] | string)[];
 
 export interface TableContentDiffFilter {
-    // specify the fields needed to compare in DBContents, if not specified, compare all
+    // specify the fields needed to compare in DBContents, if not specified, compare all 指定数据库内容需要比较的字段
     includes?: FieldPathSet;
-    // specify the fields needed to be excluded from comparison, if not specified, exclude none
+    // specify the fields needed to be excluded from comparison, if not specified, exclude none 指定需要排除比较的字段
     // rules in excludes can exclude the fields specified in includes
     excludes?: FieldPathSet;
 }
@@ -317,7 +317,7 @@ export class DBContentDiff {
         this._tableDiffs = {};
         this.from.getTablesMap().forEach((fromTable, tableName) => {
             if (!this.to.getTablesMap().has(tableName)) {
-                // for now, we suppose no table will be created or deleted during execution
+                // for now, we suppose no table will be created or deleted during execution 假定没有表格被删除或创建
                 return;
             }
             let toTable = this.to.getTablesMap().get(tableName);
