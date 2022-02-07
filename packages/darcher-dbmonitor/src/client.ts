@@ -1,5 +1,6 @@
 /**
  * The grpc client to connect with darcher-analyzer through dbmonitor service
+ * 通过数据库监视服务连接分析器
  */
 import {DBMonitorServiceClient, GetAllDataControlMsg, Role} from "@darcher/rpc";
 import * as grpc from "grpc";
@@ -11,7 +12,7 @@ export class Client {
 
     private readonly analyzerAddr: string;
 
-    private conn: DBMonitorServiceClient;
+    private conn: DBMonitorServiceClient;//数据库监视服务客户端
 
     // reverse RPCs
     private getAllDataReverseRPC: ReverseRPCServer<GetAllDataControlMsg, GetAllDataControlMsg>

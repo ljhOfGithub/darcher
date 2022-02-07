@@ -7,7 +7,7 @@ import {Error} from "./rpc/common_pb";
 import {cat} from "shelljs";
 
 class Master {
-    // active tabs with address as their key, each address may have multiple tabs
+    // active tabs with address as their key, each address may have multiple tabs 把地址作为他们的关键字唤醒标签，每个地址可能有多个标签
     private readonly tabs: { [address: string]: Tab[] };
 
     constructor() {
@@ -15,7 +15,7 @@ class Master {
     }
 
     public start() {
-        // start listen to chrome messages from content-script or popup
+        // start listen to chrome messages from content-script or popup 从内容脚本或者popup注意chrome的消息
         chrome.runtime.onMessage.addListener((msg: TestMsg, sender, sendResponse) => {
             switch (msg.type) {
                 case MsgType.TEST:
@@ -36,7 +36,7 @@ class Master {
             return true;
         });
 
-        // update tab in this.tabs when it is updated
+        // update tab in this.tabs when it is updated 
         chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             if (tab.status === "complete") {
                 // only register the tab when it is complete
@@ -46,7 +46,7 @@ class Master {
             }
         })
 
-        // remove tab in the this.tabs when the tab is removed/closed
+        // remove tab in the this.tabs when the tab is removed/closed 
         chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
             this.unregisterTab(tabId);
         });
@@ -69,7 +69,7 @@ class Master {
             return;
         }
 
-        // get the address of the tab: domain+port
+        // get the address of the tab: domain+port 
         const address = getDomainAndPort(url).trim();
         // put the tab in the list of addresses
         if (this.tabs[address]) {
@@ -127,6 +127,7 @@ class Master {
     /**
      * Refresh all the tabs with the address
      * The promise will resolve when all refresh finish
+     * 刷新所有的标签
      * @param address
      * @private
      */

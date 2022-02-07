@@ -294,6 +294,7 @@ export interface DBContentDiffFilter {
 
 /**
  * This class represent the difference between two DBContent instance.
+ * 两个数据库内容实例的区别
  */
 export class DBContentDiff {
     public readonly from: DBContent;
@@ -389,6 +390,7 @@ export class DBContentDiff {
 
 /**
  * This class represent the difference between two TableContent instance (must be with same table name).
+ * 两个表格内容实例的区别
  */
 export class TableContentDiff {
     public readonly tableName: string;
@@ -842,9 +844,9 @@ class ConsoleErrorReport implements Report {
 
     severity(): Severity {
         return Severity.Low;
-    }
+    }//严重程度
 
-    txHash(): string {
+    txHash(): string {//string不是强制约束类型，是提醒
         return this._txHash;
     }
 

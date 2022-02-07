@@ -19,7 +19,7 @@ export default class DBMonitor {
 
     public async start(): Promise<void> {
         let analyzerAddress;
-        // connect db adapter
+        // connect db adapter 连接数据库adapter
         switch (this.config.dbMonitor.db) {
             case DBOptions.mongoDB:
                 this.adapter = new MongodbAdapter(this.config.dbMonitor.dbAddress);
