@@ -109,7 +109,7 @@ $(function () {
         });
     })
 
-    // save config when window closed
+    // save config when window closed 窗口关闭时存储配置
     $(window).on("blur", () => {
         chrome.storage.local.set({
             "config": configEditor.getContent()

@@ -8,7 +8,7 @@ function save_options() {
     favoriteColor: color,
     likesColor: likesColor
   }, function() {
-    // Update status to let user know options were saved.
+    // Update status to let user know options were saved. 更新状态让用户直到选项被保存
     var status = $('#status');
     status.text('Options saved.');
     setTimeout(function() {
@@ -17,7 +17,7 @@ function save_options() {
   });
 }
 
-// Restores select box and checkbox state using the preferences
+// Restores select box and checkbox state using the preferences 使用chrome内存存储的引用恢复选择框和复选框
 // stored in chrome.storage.
 function restore_options() {
   // Use default value color = 'red' and likesColor = true.
