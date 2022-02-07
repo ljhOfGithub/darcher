@@ -70,6 +70,7 @@ export function toTxState(ls: LogicalTxState): TxState {
 
 /**
  * Analyzer is for each tx, it controls the tx state via grpc with ethmonitor and collect dapp state change data, to generate analyze report
+ * 分析器分析交易，通过grc控制交易状态，收集dapp状态变化数据，产生分析报告
  */
 export class Analyzer {
     public dappStateUpdateTimeLimit = 15000;
@@ -83,7 +84,8 @@ export class Analyzer {
     private _finished: boolean;
 
     /**
-     * A log used for offline analysis
+     * A log used for offline analysis 
+     * 用于线下分析的日志
      */
     public readonly log: TransactionLog;
 
@@ -94,7 +96,7 @@ export class Analyzer {
 
     // use for analysis
     oracles: Oracle[] = [];
-    // txError cache, will be cleaned when forwarded to oracles
+    // txError cache, will be cleaned when forwarded to oracles 
     txErrors: TxErrorMsg[] = [];
     // contractVulnerability cache, will be cleaned when forwarded to oracles
     contractVulReports: ContractVulReport[] = [];
@@ -235,8 +237,9 @@ export class Analyzer {
 
     /**
      * This method will be called through grpc by dapp test driver and will cause dapp test driver pause.
-     *
+     * 
      * This method will wait until the whole tx lifecycle traverse is finished and then resolve the promise.
+     * 等到整个交易生命周期转换完成，解析promise
      * @param msg
      */
     public async waitForTxProcess(msg: TxMsg): Promise<void> {
@@ -257,7 +260,7 @@ export class Analyzer {
     /**
      * Call each oracle's onTxState method, forwarding current txState, dbContent, txErrors, contractVulReports and consoleErrors
      * to each oracle and clean txErrors, contractVulReports, consoleErrors
-     *
+     * 调用每个测试准则的onTxState方法，传参
      * This method will first wait for a time limit for dapp to handle transaction state change.
      * @param txState The state that transaction is at currently
      */
@@ -324,6 +327,7 @@ export class Analyzer {
 
     /**
      * Get bug reports of all oracles, if there is no bug, an empty array will be returned
+     * 
      */
     public getBugReports(): Report[] {
         let reports: Report[] = [];
@@ -340,6 +344,7 @@ export class Analyzer {
 
 /**
  * This class records database changes in each state of transaction
+ * 交易的每个状态的数据库变化
  */
 export interface TransactionLog {
     parent: string | null,

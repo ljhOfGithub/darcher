@@ -1,5 +1,6 @@
 /**
  * Darcher listen for new txs and start a analyzer for each tx
+ * 注意每个新交易，开始一个分析器
  */
 import {DarcherServer, EthmonitorController} from "./service";
 import {
@@ -82,6 +83,7 @@ export class Darcher {
 
     /**
      * Start the Darcher and returns a promise which resolves when the darcher is started and rejects when error
+     * 
      */
     public async start(): Promise<void> {
         await this.traceStore.start()

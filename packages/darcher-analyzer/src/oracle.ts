@@ -1,5 +1,6 @@
 /*
 This file defines test oracles for on-chain-off-chain synchronization bugs
+定义测试准则
  */
 import {LogicalTxState, TransactionLog} from "./analyzer";
 import {ConsoleErrorMsg, ContractVulReport, DBContent, TableContent, TxErrorMsg,} from "@darcher/rpc";
@@ -17,11 +18,13 @@ export enum VulnerabilityType {
 
 /**
  * Each oracle instance should only be used for one transaction.
+ * 每个准则实例只用于一个交易
  */
 export interface Oracle {
 
     /**
-     * should return whether this transaction's execution violates the oracle (is buggy)
+     * should return whether this transaction's execution violates the oracle (is buggy) 
+     * 该交易的执行是否违反准则
      */
     isBuggy(): boolean;
 
@@ -29,11 +32,11 @@ export interface Oracle {
 
     /**
      * This method should be called only when transaction is at each transaction state.
-     * @param txState The transaction state that transaction is currently at
-     * @param dbContent The database content (after change in response to the transaction state) in dapp
-     * @param txErrors The tx execution error during this tx state
-     * @param contractVulReports The contract vulnerability reports during this transaction state
-     * @param consoleErrors The dapp console errors during this transaction state
+     * @param txState The transaction state that transaction is currently at 交易当前状态
+     * @param dbContent The database content (after change in response to the transaction state) in dapp 交易状态的改变后的dapp的数据库内容
+     * @param txErrors The tx execution error during this tx state 该状态下的交易的执行错误
+     * @param contractVulReports The contract vulnerability reports during this transaction state 该状态的合约漏洞报告
+     * @param consoleErrors The dapp console errors during this transaction state 该状态下的控制台错误
      * @param dappStack
      */
     onTxState(txState: LogicalTxState,
@@ -119,6 +122,7 @@ export function analyzeTransactionLog(oracle: Oracle, log: TransactionLog): Repo
  * Database change oracle
  * 1. DBContent in tx pending state should be equal to that in tx removed state (High).
  * 2. DBContent should not be changed in pending state (Low).
+ * 
  */
 export class DBChangeOracle implements Oracle {
     private readonly txHash: string;
