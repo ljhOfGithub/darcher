@@ -5,10 +5,10 @@ import {EventEmitter} from "events";
 import {PromiseKit} from "./utility";
 import {DarcherError, GRPCRawError, ServiceCancelledError, ServiceNotAvailableError} from "./error";
 
-export type ReverseRPCHandler<ReqT, RespT> = (req: ReqT) => Promise<RespT>;
+export type ReverseRPCHandler<ReqT, RespT> = (req: ReqT) => Promise<RespT>;//映射类型，定义参数和参数的返回值类型，定义两个泛型
 
 export interface Identifiable {
-    getRole(): Role;
+    getRole(): Role;//函数返回值类型
 
     getId(): string;
 }
@@ -19,7 +19,7 @@ export interface Identifiable {
  */
 export class ReverseRPCServer<ReqT extends Identifiable, RespT extends Identifiable> {
     private readonly name: string;
-    private stream: grpc.ClientDuplexStream<RespT, ReqT>
+    private stream: grpc.ClientDuplexStream<RespT, ReqT> //A stream that the client can read from or write to. Used for calls with duplex streaming.
     private emitter: EventEmitter
 
     constructor(name: string, stream: grpc.ClientDuplexStream<RespT, ReqT>) {
@@ -160,7 +160,7 @@ export class ReverseRPCClient<ReqT extends Identifiable, RespT extends Identifia
     }
 
     /**
-     * Call the reverse rpc, this will return a promise which resolves when the rpc returns, and rejects when error
+     * Call the reverse rpc, this will return a promise which resolves when the rpc returns, and rejects when error 
      * @param request
      */
     public async call(request: ReqT): Promise<RespT> {

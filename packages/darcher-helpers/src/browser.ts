@@ -27,7 +27,7 @@ export class Browser implements Service {
     ) {
     }
 
-    async start() {
+    async start() { //设置浏览器启动端口，路径，设置日志
         const options = new Options()
             .addArguments(
                 "--args",
@@ -49,7 +49,7 @@ export class Browser implements Service {
     async waitForEstablishment(): Promise<void> {
         return Promise.resolve();
     }
-
+    //推出浏览器
     async shutdown(): Promise<void> {
         if (!this._driver) {
             this.logger.info("Chrome already shutdown");
@@ -82,7 +82,7 @@ export class MetaMask {
         private readonly password: string,
     ) {
     }
-
+    //修改网络
     changeNetwork(name: string): MetaMask {
         this.taskQueue.push(
             async () => {
@@ -107,7 +107,7 @@ export class MetaMask {
         )
         return this;
     }
-
+    //修改账户
     changeAccount(accName: string): MetaMask {
         this.taskQueue.push(async () => {
             this.logger.info("Changing MetaMask account...", {account: accName});
@@ -135,7 +135,7 @@ export class MetaMask {
         });
         return this;
     }
-
+    //重置账户
     resetAccount(): MetaMask {
         this.taskQueue.push(async () => {
             this.logger.info("Resetting MetaMask account...");
@@ -171,7 +171,7 @@ export class MetaMask {
         });
         return this;
     }
-
+    
     async do(): Promise<void> {
         this.logger.info("Opening MetaMask home page...", {url: this.homeUrl})
         const current = await this.driver.getWindowHandle();
