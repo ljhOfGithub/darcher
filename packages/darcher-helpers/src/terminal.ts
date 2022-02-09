@@ -5,13 +5,13 @@ import * as shell from "shelljs";
 import * as os from "os";
 
 export class Command {
-    // multiple cmds will be joined with &&
+    // multiple cmds will be joined with && 用&&连接多个指令
     private otherCmds: Command[];
     // payload stores the content of current command
     private readonly payload: string[];
 
     /**
-     * Construct a new Command, with optional segments
+     * Construct a new Command, with optional segments 建立命令字符串
      * @param segments
      */
     constructor(...segments: string[]) {
@@ -26,7 +26,7 @@ export class Command {
     }
 
     /**
-     * Append more segments to the end of command
+     * Append more segments to the end of command 在指令的末尾添加指令更多段
      * @param segments
      */
     public append(...segments: string[]): Command {
@@ -40,7 +40,7 @@ export class Command {
     }
 
     /**
-     * Concat other commands to this command. e.g. cd /var && ls -a
+     * Concat other commands to this command. e.g. cd /var && ls -a 连接其他指令
      * @param cmds
      */
     public concat(...cmds: Command[]): Command {
@@ -49,7 +49,7 @@ export class Command {
     }
 
     /**
-     * Shallow copy this command, otherCmds will only copy reference
+     * Shallow copy this command, otherCmds will only copy reference 浅拷贝当前指令，otherCmds只复制引用
      */
     public copy(): Command {
         let cmd = new Command(...this.payload);
@@ -66,7 +66,7 @@ export class Command {
     }
 
     /**
-     * get the child_process.spawn-like command
+     * get the child_process.spawn-like command spawn类指令
      */
     get command(): string {
         return this.payload.length > 0 ? this.payload[0] : undefined;
@@ -81,11 +81,11 @@ export class Command {
 }
 
 export class Tab {
-    // whether to open a new window
+    // whether to open a new window 是否要开新窗口
     public w: boolean
-    // the command to be executed in this tab
+    // the command to be executed in this tab 该窗口的指令
     public cmd: Command;
-    // working directory of this tab
+    // working directory of this tab 
     public pwd: string;
     // tab title
     public title: string;
@@ -115,13 +115,13 @@ export class TerminalWindow {
         this.tabs.push(...tabs);
     }
 
-    // open the terminal window
+    // open the terminal window 
     public open() {
         const osType = os.type();
         if (osType === "Darwin") {
             // MacOS
             let first = true;
-            // only open the first tab in new window
+            // only open the first tab in new window 
             for (let tab of this.tabs) {
                 tab.w = first;
                 tab.open();
