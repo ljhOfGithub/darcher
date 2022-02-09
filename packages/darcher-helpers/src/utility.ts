@@ -29,7 +29,7 @@ export type PromiseKit<T> = {
 export const sleep: (ms: number) => Promise<void> = async (ms: number): Promise<void> => {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-
+//格式化hash
 export function prettifyHash(hash: string): string {
     if (!hash) {
         return hash;
@@ -40,7 +40,7 @@ export function prettifyHash(hash: string): string {
     }
     return `${hash.substring(startIndex, startIndex + 6)}…${hash.substring(hash.length - 6, hash.length)}`;
 }
-
+载入设置
 export async function loadConfig(configPath: string): Promise<Config> {
     async function loadScript(path: string): Promise<Config> {
         let module = await import(path);
@@ -90,8 +90,8 @@ export function updateJsonFile(jsonFilePath: string, updateFunc: (obj: undefined
  * @param instrumentHooks
  */
 export function updateJsFile(jsFilePath: string, ...instrumentHooks: InstrumentHook[]) {
-    const esprima = require("esprima");
-    const escodegen = require("escodegen");
+    const esprima = require("esprima");//一个用于对 JS 代码做词法或者语法分析的工具
+    const escodegen = require("escodegen");//Escodegen是一个代码生成器,可以把AST转换成JavaScript代码
     if (!fs.existsSync(jsFilePath)) {
         throw new Error(`${jsFilePath} does not exist`);
     }
