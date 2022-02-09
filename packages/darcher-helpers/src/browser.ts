@@ -7,7 +7,7 @@ import {sleep} from "./utility";
 import * as os from "os";
 
 const osType = os.type();
-let pathToWebDriver = "";
+let pathToWebDriver = ""; //驱动器路径
 if (osType === "Linux") {
     pathToWebDriver = path.join(__dirname, "..", "webdriver", "linux");
 } else if (osType === "Darwin") {
@@ -18,7 +18,7 @@ if (!process.env.PATH.includes(pathToWebDriver)) {
 }
 
 export class Browser implements Service {
-    private _driver: WebDriver | null;
+    private _driver: WebDriver | null; //指定类型null后，_driver可以被赋值null
 
     constructor(
         private readonly logger: Logger,

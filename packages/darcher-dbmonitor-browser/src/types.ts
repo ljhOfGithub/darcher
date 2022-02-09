@@ -10,15 +10,15 @@ export interface RequestMsg {
     type: MsgType.REQUEST
     requestType: "indexedDB" | "html"
 
-    // indexedDB type fields
+    // indexedDB type fields 类型字段
     dbName?: string
 
-    // html type fields
-    elements?: { name: string, xpath: string }[]
+    // html type fields 
+    elements?: { name: string, xpath: string }[] //特定类型的结构体数组
     js?: string
 }
 
-// sent from popup to background for test purposes
+// sent from popup to background for test purposes 
 export interface TestMsg {
     type: MsgType.TEST
     testType: "fetch-html" | "refresh" | "tabs"
@@ -88,7 +88,7 @@ export class TableSnapshot {
     }
 
     private getContent(key: any): object | undefined {
-        // if key path is array, the key must be an array with same length
+        // if key path is array, the key must be an array with same length key路径是数组，key也是等长数组
         if (Array.isArray(this.keyPath)) {
             if (!Array.isArray(key)) {
                 return undefined;

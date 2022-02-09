@@ -36,7 +36,7 @@ class Master {
             return true;
         });
 
-        // update tab in this.tabs when it is updated 
+        // update tab in this.tabs when it is updated 更新标签页
         chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             if (tab.status === "complete") {
                 // only register the tab when it is complete
@@ -46,7 +46,7 @@ class Master {
             }
         })
 
-        // remove tab in the this.tabs when the tab is removed/closed 
+        // remove tab in the this.tabs when the tab is removed/closed 移除标签页
         chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
             this.unregisterTab(tabId);
         });
