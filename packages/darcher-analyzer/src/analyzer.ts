@@ -167,7 +167,7 @@ export class Analyzer {
 
     public async onTxTraverseStart(msg: TxTraverseStartMsg): Promise<void> {
         // fire the TxStateChange event on CREATED state, this is a fake event just used to apply oracles on CREATED state 在创建完成状态唤醒交易状态改变事件，这是一个假事件，仅仅用于申请使用准则
-        await this.onTxStateChange(new TxStateChangeMsg().setHash(this.txHash).setFrom(undefined).setTo(TxState.CREATED));
+        await this.onTxStateChange(new TxStateChangeMsg().setHash(this.txHash).setFrom(undefined).setTo(TxState.CREATED));//传参 状态改变信息，从初始状态改变到created状态，setxx是设置该对象的值的函数
     }
 
     public async onTxFinished(msg: TxFinishedMsg): Promise<void> {

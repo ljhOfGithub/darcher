@@ -3,7 +3,7 @@
 
 /* tslint:disable */
 /* eslint-disable */
-
+//用 ts 写的模块在发布的时候仍然是用 js 发布，这就导致一个问题：ts 那么多类型数据都没了，所以需要一个 d.ts 文件来标记某个 js 库里面对象的类型
 import * as grpc from "grpc";
 import * as ethmonitor_controller_service_pb from "./ethmonitor_controller_service_pb";
 import * as common_pb from "./common_pb";
