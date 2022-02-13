@@ -19,7 +19,7 @@ import {DbMonitorService} from "./service/dbmonitorService";
 import {Oracle, Report} from "./oracle";
 
 /**
- * Extend TxState to introduce logical tx state (removed, re-executed) 设置交易的状态
+ * Extend TxState to introduce logical tx state (removed, re-executed) 使用枚举设置交易的状态
  */
 export enum LogicalTxState {
     CREATED,
@@ -30,7 +30,7 @@ export enum LogicalTxState {
     REMOVED,
     REEXECUTED,
 }
-
+//所有的逻辑交易状态
 export const allLogicalTxStates = [
     LogicalTxState.CREATED,
     LogicalTxState.PENDING,
@@ -41,7 +41,7 @@ export const allLogicalTxStates = [
     LogicalTxState.REEXECUTED,
 ]
 
-export function isEqualState(s: TxState, ls: LogicalTxState): boolean {
+export function isEqualState(s: TxState, ls: LogicalTxState): boolean { //判断实际的交易状态和逻辑上的交易状态是否相等
     if (<number>s === <number>ls) {
         return true;
     }
@@ -49,7 +49,7 @@ export function isEqualState(s: TxState, ls: LogicalTxState): boolean {
         s === TxState.PENDING && ls === LogicalTxState.REMOVED;
 }
 
-export function toTxState(ls: LogicalTxState): TxState {
+export function toTxState(ls: LogicalTxState): TxState {//将逻辑状态转换为实际状态
     switch (ls) {
         case LogicalTxState.CONFIRMED:
             return TxState.CONFIRMED;
@@ -78,7 +78,7 @@ export class Analyzer {
     private readonly config: Config;
     private readonly logger: Logger;
     public readonly txHash: string;
-    private txState: LogicalTxState;
+    private txState: LogicalTxState;//使用逻辑交易状态进行分析
     public readonly parentHash: string;
 
     private _finished: boolean;
@@ -94,15 +94,15 @@ export class Analyzer {
     private stateChangeWaiting: Promise<LogicalTxState>;
     private stateEmitter: EventEmitter;
 
-    // use for analysis
+    // use for analysis 用于分析
     oracles: Oracle[] = [];
-    // txError cache, will be cleaned when forwarded to oracles 
+    // txError cache, will be cleaned when forwarded to oracles 交易错误cache，被推送给准则后被清空
     txErrors: TxErrorMsg[] = [];
-    // contractVulnerability cache, will be cleaned when forwarded to oracles
+    // contractVulnerability cache, will be cleaned when forwarded to oracles  
     contractVulReports: ContractVulReport[] = [];
     // consoleError cache, will be cleaned when forwarded to oracles
     consoleErrors: ConsoleErrorMsg[] = [];
-
+    // 分析器类的构造函数
     constructor(logger: Logger, config: Config, txHash: string, dbmonitorService: DbMonitorService, parentHash: string = null) {
         this.config = config;
         this.logger = logger;
@@ -154,7 +154,7 @@ export class Analyzer {
         } else {
             this.txState = <LogicalTxState>(msg.getTo() as number);
         }
-        // apply oracles, this may block for a while
+        // apply oracles, this may block for a while 申请使用准则
         if (this.txState === LogicalTxState.PENDING) {
             await sleep(2000);
         }
@@ -315,7 +315,7 @@ export class Analyzer {
                 } catch (e) {
                     this.logger.error(e);
                 }
-                // clean txErrors, contractVulReports, consoleErrors, because they are cache for only one tx state 
+                // clean txErrors, contractVulReports, consoleErrors, because they are cache for only one tx state 仅仅是一个交易状态的cache
                 this.txErrors = [];
                 this.contractVulReports = [];
                 this.consoleErrors = [];
@@ -360,7 +360,7 @@ export interface TransactionLog {
     },
     stack?: string[],
 }
-
+//交易状态的log
 export interface TransactionStateLog {
     dbContent: DBContent.AsObject,
     txErrors: TxErrorMsg.AsObject[],
