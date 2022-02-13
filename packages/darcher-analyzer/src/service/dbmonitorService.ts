@@ -25,7 +25,7 @@ import {EventEmitter} from "events";
 
 export class DbMonitorService implements Service {
     private readonly logger: Logger;
-    private readonly wsPort: number; // grpc port is not needed because grpc is opened upstream
+    private readonly wsPort: number; // grpc port is not needed because grpc is opened upstream grpc不需要端口因为是开放的上游
 
     public readonly wsTransport: DBMonitorServiceViaWebsocket;
     public readonly grpcTransport: DBMonitorServiceViaGRPC;
@@ -48,7 +48,7 @@ export class DbMonitorService implements Service {
 
     public async waitForEstablishment(): Promise<void> {
         return new Promise(resolve => {
-            // resolve when either of the two transport is established
+            // resolve when either of the two transport is established 直到两个中任意一个建立成功
             this.grpcTransport.waitForEstablishment().then(resolve);
             this.wsTransport.waitForEstablishment().then(resolve);
         });
@@ -59,7 +59,7 @@ export class DbMonitorService implements Service {
             return await this.wsTransport.getAllData(dbAddress, dbName, data);
         } catch (e) {
             if (e.code === DarcherErrorCode.ServiceNotAvailable) {
-                // ws transport is not available, try grpc transport, throw any error this time
+                // ws transport is not available, try grpc transport, throw any error this time 
                 let request = new GetAllDataControlMsg();
                 request.setRole(Role.DBMONITOR).setId(getUUID()).setDbAddress(dbAddress).setDbName(dbName);
                 let resp = await this.grpcTransport.getAllData(request);
@@ -76,8 +76,8 @@ export class DbMonitorService implements Service {
 }
 
 /**
- * DB monitor service, to get database data from dapp
- * Since grpc does not support bidirectional stream in browser, we use websocket as transport to simulate bidirectional stream
+ * DB monitor service, to get database data from dapp DBMonitor从dapp中获取数据库数据
+ * Since grpc does not support bidirectional stream in browser, we use websocket as transport to simulate bidirectional stream grpc不支持浏览器的双向流，使用websocket模仿双向流
  */
 class DBMonitorServiceViaWebsocket implements Service {
     private readonly logger: Logger;
@@ -129,7 +129,7 @@ class DBMonitorServiceViaWebsocket implements Service {
     /* websocket handlers start */
     private onConnection = (ws: WebSocket, request: http.IncomingMessage) => {
         if (this.conn) {
-            this.logger.warn("Websocket connection with dbmonitor already established, ignore new connection");
+            this.logger.warn("Websocket connection with dbmonitor already established, ignore new connection");//
             return
         }
         this.logger.info("Websocket connection with dbmonitor opened");

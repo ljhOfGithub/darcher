@@ -44,7 +44,7 @@ export class DarcherServer extends Server implements Service {
     }
 
     /**
-     * Start the DarcherServer and returns a promise which resolves when the server is started and rejects when error
+     * Start the DarcherServer and returns a promise which resolves when the server is started and rejects when error 异步启动两个服务器
      */
     public async start(): Promise<void> {
         // start websocket services
