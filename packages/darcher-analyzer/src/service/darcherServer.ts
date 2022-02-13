@@ -17,7 +17,7 @@ import * as fs from "fs";
 import * as path from "path";
 
 /**
- * Darcher server maintain grpc or websocket connection with different components of darcher project.
+ * Darcher server maintain grpc or websocket connection with different components of darcher project.服务器使用grpc或websocket和不同的项目部分连接
  */
 export class DarcherServer extends Server implements Service {
     protected readonly logger: Logger;

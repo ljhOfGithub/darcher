@@ -17,7 +17,7 @@ var global = Function('return this')();
 
 var common_pb = require('./common_pb.js');
 goog.object.extend(proto, common_pb);
-goog.exportSymbol('proto.darcher.ControlMsg', null, global);
+goog.exportSymbol('proto.darcher.ControlMsg', null, global);//export变量
 goog.exportSymbol('proto.darcher.DBContent', null, global);
 goog.exportSymbol('proto.darcher.GetAllDataControlMsg', null, global);
 goog.exportSymbol('proto.darcher.RequestType', null, global);
