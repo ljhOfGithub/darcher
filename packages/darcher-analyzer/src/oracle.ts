@@ -31,7 +31,7 @@ export interface Oracle {
     getBugReports(): Report[];
 
     /**
-     * This method should be called only when transaction is at each transaction state.
+     * This method should be called only when transaction is at each transaction state.处于每个交易状态时才调用
      * @param txState The transaction state that transaction is currently at 交易当前状态
      * @param dbContent The database content (after change in response to the transaction state) in dapp 交易状态的改变后的dapp的数据库内容
      * @param txErrors The tx execution error during this tx state 该状态下的交易的执行错误
@@ -120,9 +120,9 @@ export function analyzeTransactionLog(oracle: Oracle, log: TransactionLog): Repo
 
 /**
  * Database change oracle
- * 1. DBContent in tx pending state should be equal to that in tx removed state (High).
- * 2. DBContent should not be changed in pending state (Low).
- * 
+ * 1. DBContent in tx pending state should be equal to that in tx removed state (High). pending状态的数据库内容需要和交易的removed状态的内容一致 high表示高风险
+ * 2. DBContent should not be changed in pending state (Low). 数据库内容不能在pending状态改变
+ *  
  */
 export class DBChangeOracle implements Oracle {
     private readonly txHash: string;
@@ -156,12 +156,12 @@ export class DBChangeOracle implements Oracle {
         let pendingConfirmedDiff: DBContentDiff = new DBContentDiff(pending, confirmed, this.filter);
         if (!createdConfirmedDiff.zero()) {
             if (pendingConfirmedDiff.zero()) {
-                // DBContent at pending state should not be equal with confirmed state if created state and confirmed state is different.
+                // DBContent at pending state should not be equal with confirmed state if created state and confirmed state is different. 
                 reports.push(new UnreliableTxHashReport(
                     this.txHash,
                     LogicalTxState.PENDING,
                     createdConfirmedDiff,
-                ));
+                ));// 记录
             }
 
             // this may induce FP when removed tx is not handled
@@ -201,7 +201,7 @@ export class DBChangeOracle implements Oracle {
 }
 
 /**
- * Bug reports for UnreliableTxHash type. Persistent changes shouldn't be made at pending state 不能在pending状态进行永久的变化
+ * Bug reports for UnreliableTxHash type. Persistent changes shouldn't be made at pending state 不能在pending状态进行永久持续的变化
  */
 class UnreliableTxHashReport implements Report {
     private readonly _txHash: string;
@@ -361,7 +361,7 @@ export class DBContentDiff {
     }
 
     /**
-     * Whether no difference or not
+     * Whether no difference or not 
      */
     public zero(): boolean {
         return _.values(this._tableDiffs).every(value => value.zero());
@@ -462,7 +462,7 @@ export class TableContentDiff {
 }
 
 /**
- * The change of two records
+ * The change of two records 表格记录的改变
  */
 export class TableRecordChange {
     public readonly from: TableRecord;
@@ -481,7 +481,7 @@ export class TableRecordChange {
 }
 
 /**
- * One entry in each table
+ * One entry in each table 
  */
 export class TableRecord {
     public readonly keyPath: string[];
@@ -529,7 +529,7 @@ export class TableRecord {
 
     private filterData(data: { [key: string]: any }): { [key: string]: any } {
         let thisData = _.cloneDeep(data);
-        // delete the fields specified in exclusion
+        // delete the fields specified in exclusion 删除指定的排除的域
         const deleteField = (data: { [key: string]: any }, excludePath: (string | RegExp)[]) => {
             for (let key of Object.keys(data)) {
                 let reg = new RegExp(excludePath[0]);
@@ -610,7 +610,7 @@ export class TableRecord {
 
 /**
  * TxError oracle
- * 1. transaction should be already checked before being sent by DApp and should not fail. (Medium)
+ * 1. transaction should be already checked before being sent by DApp and should not fail. (Medium) 交易在被发送给dapp前应该已经被检查，并且不能失败
  */
 export class TxErrorOracle implements Oracle {
     private readonly txHash: string;
@@ -693,7 +693,7 @@ class TxErrorReport implements Report {
         return `[${VulnerabilityType.TransactionError}] Tx ${prettifyHash(this.txHash())} at ${$enum(LogicalTxState).getKeyOrDefault(this.txState, "unknown")}: ${this.errorMsg.getDescription()}`;
     }
 }
-
+//合约漏洞准则
 export class ContractVulnerabilityOracle implements Oracle {
     private readonly txHash: string;
     private readonly contractVulMap: { [txState in LogicalTxState]: ContractVulReport[] }
@@ -746,7 +746,7 @@ export class ContractVulnerabilityOracle implements Oracle {
 }
 
 /**
- * Bug reports for ContractVulnerability type
+ * Bug reports for ContractVulnerability type 合约漏洞报告
  */
 class ContractVulnerabilityReport implements Report {
     private readonly _txHash: string;
@@ -776,7 +776,7 @@ class ContractVulnerabilityReport implements Report {
     }
 
 }
-
+//控制台错误准则
 export class ConsoleErrorOracle implements Oracle {
     private readonly txHash: string;
     private readonly consoleErrorMap: { [txState in LogicalTxState]: ConsoleErrorMsg[] }
