@@ -38,7 +38,7 @@ export interface DBMonitorConfig {
     db: DBOptions
     dbName: string
     dbAddress: string
-    // only used in html mode DApp state
+    // only used in html mode DApp state 
     elements?: { name: string, xpath: string }[]
     js?: string,
 }

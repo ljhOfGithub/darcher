@@ -43,7 +43,7 @@ export class Darcher {
     // dappTestDriverService handler
     public readonly dappTestDriverHandler: DappTestDriverServiceHandler;
 
-    constructor(logger: Logger, config: Config) {
+    constructor(logger: Logger, config: Config) { // ws是websocket
         this.config = config;
         this.logger = logger;
         this.traceStore = new TraceStore(config.analyzer.traceStorePort ?? 1236, this.logger, undefined, this.onTxTrace.bind(this));

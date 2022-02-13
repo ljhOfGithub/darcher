@@ -36,7 +36,7 @@ if (require.main === module) {
                 ]
             },
 
-            metamaskNetwork: "Localhost 8545",
+            metamaskNetwork: "Localhost 8545",//使用本地metamask
             metamaskAccount: "Default0",
         });
         await startExperiment(agroChainConfig);

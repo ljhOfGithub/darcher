@@ -10,7 +10,7 @@ export default <Config>{
         txStateChangeProcessTime: 15000,
     },
     dbMonitor: {
-        db: DBOptions.html,
+        db: DBOptions.html,//html是html字符串
         dbName: "html",
         dbAddress: "localhost:3000",
         elements: [

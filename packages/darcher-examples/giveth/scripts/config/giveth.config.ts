@@ -1,4 +1,4 @@
-import {ClusterConfig, ControllerOptions, AnalyzerConfig, DBMonitorConfig, DBOptions, Config} from "@darcher/config";
+import {ClusterConfig, ControllerOptions, AnalyzerConfig, DBMonitorConfig, DBOptions, Config} from "@darcher/config";//导入所有设置
 import * as path from "path";
 
 const blockchainDir = path.join(__dirname, "..", "..", "blockchain");
@@ -6,7 +6,7 @@ const blockchainDir = path.join(__dirname, "..", "..", "blockchain");
 export const homeClusterConfig = <ClusterConfig>{
     ethmonitorPort: 8989,
     controller: ControllerOptions.darcher,
-    genesisFile: path.join(blockchainDir, "home_network", "genesis.json"),
+    genesisFile: path.join(blockchainDir, "home_network", "genesis.json"),//本地的创世块
     dir: path.join(blockchainDir, "home_network"),
     keyStoreDir: path.join(blockchainDir, "home_network", "keystore"),
     networkId: 66,
@@ -34,7 +34,7 @@ export const foreignClusterConfig = <ClusterConfig>{
 export const dbMonitorConfig = <DBMonitorConfig>{
     db: DBOptions.mongoDB,
     dbName: "giveth",
-    dbAddress: "mongodb://localhost:27017",
+    dbAddress: "mongodb://localhost:27017",//本地的数据库地址
 };
 
 export const darcherConfig = <AnalyzerConfig>{

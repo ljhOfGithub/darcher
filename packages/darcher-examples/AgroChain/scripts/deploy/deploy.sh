@@ -16,7 +16,7 @@ case "$(uname -s)" in
     *)          ;;
 esac
 
-# docker compose cluster in deploy mode
+# docker compose cluster in deploy mode Docker以部署方式组成集群
 BLOCKCHAIN_DIR=$BASE_DIR/blockchain ETHASH=$ETHASH docker-compose -f "$DIR"/docker-compose.yml up -d
 
 # deploy contracts

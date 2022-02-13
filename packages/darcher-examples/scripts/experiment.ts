@@ -10,7 +10,7 @@ import {WebDriver} from "selenium-webdriver";
 import DBMonitor from "@darcher/dbmonitor";
 import * as http from "http";
 
-export interface ExperimentConfig {
+export interface ExperimentConfig { //实验设置
     dappName: string,
     crawljaxClassName: string,
     dappUrl?: string,
