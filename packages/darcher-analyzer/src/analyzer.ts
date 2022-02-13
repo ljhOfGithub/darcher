@@ -19,7 +19,7 @@ import {DbMonitorService} from "./service/dbmonitorService";
 import {Oracle, Report} from "./oracle";
 
 /**
- * Extend TxState to introduce logical tx state (removed, re-executed)
+ * Extend TxState to introduce logical tx state (removed, re-executed) 设置交易的状态
  */
 export enum LogicalTxState {
     CREATED,
@@ -166,17 +166,17 @@ export class Analyzer {
     }
 
     public async onTxTraverseStart(msg: TxTraverseStartMsg): Promise<void> {
-        // fire the TxStateChange event on CREATED state, this is a fake event just used to apply oracles on CREATED state
+        // fire the TxStateChange event on CREATED state, this is a fake event just used to apply oracles on CREATED state 在创建完成状态唤醒交易状态改变事件，这是一个假事件，仅仅用于申请使用准则
         await this.onTxStateChange(new TxStateChangeMsg().setHash(this.txHash).setFrom(undefined).setTo(TxState.CREATED));
     }
 
     public async onTxFinished(msg: TxFinishedMsg): Promise<void> {
-        // wait for tx state changed to CONFIRMED
+        // wait for tx state changed to CONFIRMED 等待交易状态改变到确认
         await this.stateChangeWaiting;
     }
 
     public async askForNextState(msg: TxStateControlMsg): Promise<TxState> {
-        // before tell ethmonitor next state, make sure previous state has been reached
+        // before tell ethmonitor next state, make sure previous state has been reached 在告诉监视器下一个状态前，确保之前的状态已经到达
         await this.stateChangeWaiting;
         if (this.txState === LogicalTxState.CREATED) {
             this.stateChangeWaiting = new Promise<LogicalTxState>(resolve => {
@@ -236,7 +236,7 @@ export class Analyzer {
     }
 
     /**
-     * This method will be called through grpc by dapp test driver and will cause dapp test driver pause.
+     * This method will be called through grpc by dapp test driver and will cause dapp test driver pause. 这个方法被dapp测试驱动器通过grpc唤醒，将导致测试驱动器停止
      * 
      * This method will wait until the whole tx lifecycle traverse is finished and then resolve the promise.
      * 等到整个交易生命周期转换完成，解析promise
@@ -261,7 +261,7 @@ export class Analyzer {
      * Call each oracle's onTxState method, forwarding current txState, dbContent, txErrors, contractVulReports and consoleErrors
      * to each oracle and clean txErrors, contractVulReports, consoleErrors
      * 调用每个测试准则的onTxState方法，传参
-     * This method will first wait for a time limit for dapp to handle transaction state change.
+     * This method will first wait for a time limit for dapp to handle transaction state change.先等待一段时间，有限制的一段时间，然后处理交易状态的改变
      * @param txState The state that transaction is at currently
      */
     private async applyOracles(txState: LogicalTxState): Promise<void> {
@@ -269,7 +269,7 @@ export class Analyzer {
             tx: prettifyHash(this.txHash),
             "state": $enum(LogicalTxState).getKeyOrDefault(txState, undefined)
         });
-        // the time limit (milliseconds) for dapp to handle tx state change
+        // the time limit (milliseconds) for dapp to handle tx state change dapp处理交易状态改变的时间限制
         return new Promise(async resolve => {
             let waitTime;
             if (this.txState === LogicalTxState.CREATED) {
@@ -277,7 +277,7 @@ export class Analyzer {
             } else {
                 waitTime = this.dappStateUpdateTimeLimit;
                 if (this.config.dbMonitor.dbName !== "html") {
-                    // only refresh page when db is not html
+                    // only refresh page when db is not html 
                     try {
                         this.logger.debug("Refreshing page...");
                         await this.dbMonitorService.refreshPage(this.config.dbMonitor.dbAddress);
@@ -302,7 +302,7 @@ export class Analyzer {
                         "state": $enum(LogicalTxState).getKeyOrDefault(txState, undefined),
                         "data": dbContent.toObject()
                     });
-                    // forward to each oracle
+                    // forward to each oracle 推送给每一个准则
                     for (let oracle of this.oracles) {
                         oracle.onTxState(txState, dbContent, this.txErrors, this.contractVulReports, this.consoleErrors);
                     }
@@ -315,7 +315,7 @@ export class Analyzer {
                 } catch (e) {
                     this.logger.error(e);
                 }
-                // clean txErrors, contractVulReports, consoleErrors, because they are cache for only one tx state
+                // clean txErrors, contractVulReports, consoleErrors, because they are cache for only one tx state 
                 this.txErrors = [];
                 this.contractVulReports = [];
                 this.consoleErrors = [];
@@ -326,7 +326,7 @@ export class Analyzer {
     }
 
     /**
-     * Get bug reports of all oracles, if there is no bug, an empty array will be returned
+     * Get bug reports of all oracles, if there is no bug, an empty array will be returned 
      * 
      */
     public getBugReports(): Report[] {
@@ -344,7 +344,7 @@ export class Analyzer {
 
 /**
  * This class records database changes in each state of transaction
- * 交易的每个状态的数据库变化
+ * 记录交易的每个状态的在数据库中的变化
  */
 export interface TransactionLog {
     parent: string | null,

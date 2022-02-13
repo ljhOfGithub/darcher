@@ -80,13 +80,13 @@ export function traceSendAsync(method: string, params: any[], callback: Function
         callback = new Proxy(callback, {
             apply(target, thisArg, argArray) {
                 if (method === 'eth_estimateGas') {
-                    // save gas
+                    // save gas 存储gas
                     traceCache.params[0].gas = argArray[1];
-                    // save to history, in case there is a transaction use this call later
+                    // save to history, in case there is a transaction use this call later 
                     traceCache.stack = traceObj.stack.split(/\n/).map(item => item.trim()).filter(item => item.length > 0 && item !== "Error");
                     GLOBAL.traceHistories.push(traceCache);
                 } else if (['eth_sendTransaction', 'eth_sendRawTransaction'].includes(method)) {
-                    // search trace history for a possible estimateGas cache (which is more precise)
+                    // search trace history for a possible estimateGas cache (which is more precise) 搜索路径历史，寻找可能的cache
                     for (let i = GLOBAL.traceHistories.length - 1; i >= 0; i--) {
                         const history = GLOBAL.traceHistories[i];
                         if (history.method === 'eth_estimateGas' &&
@@ -95,9 +95,9 @@ export function traceSendAsync(method: string, params: any[], callback: Function
                             history.params[0].to === params[0].to &&
                             history.params[0].data === params[0].data
                         ) {
-                            // delete this from history
+                            // delete this from history 从追踪历史中删除 
                             GLOBAL.traceHistories = GLOBAL.traceHistories.filter(value => value !== history);
-                            // use the stack trace of this cache
+                            // use the stack trace of this cache 使用cache的栈trace
                             traceCache.stack = history.stack;
                             break;
                         }

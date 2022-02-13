@@ -18,7 +18,7 @@ export class TraceStore {
         }
     }
 
-    public async start() {
+    public async start() { 
         if (this.save_dir && !fs.existsSync(this.save_dir)) {
             fs.mkdirSync(this.save_dir, {recursive: true});
         }
