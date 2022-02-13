@@ -22,7 +22,7 @@ export function getUUID(): string {
 }
 
 export type PromiseKit<T> = {
-    resolve: (value?: T | PromiseLike<T>) => void;
+    resolve: (value?: T | PromiseLike<T>) => void; //接收resolve的值，reject的reson
     reject: (reason?: any) => void;
 }
 
