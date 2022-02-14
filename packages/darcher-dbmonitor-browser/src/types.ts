@@ -18,7 +18,7 @@ export interface RequestMsg {
     js?: string
 }
 
-// sent from popup to background for test purposes 
+// sent from popup to background for test purposes 为了测试目的从popup发送到background
 export interface TestMsg {
     type: MsgType.TEST
     testType: "fetch-html" | "refresh" | "tabs"
