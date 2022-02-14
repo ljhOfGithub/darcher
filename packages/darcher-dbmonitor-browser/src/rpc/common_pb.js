@@ -2,12 +2,12 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {missingRequire} reports error on implicit type usages.
+ * @suppress {missingRequire} reports error on implicit type usages. 需要做显式的类型转换
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
-// GENERATED CODE -- DO NOT EDIT!
+// GENERATED CODE -- DO NOT EDIT! 
 /* eslint-disable */
 // @ts-nocheck
 
@@ -26,7 +26,7 @@ goog.exportSymbol('proto.darcher.TxState', null, global);
  * server response, or constructed directly in Javascript. The array is used
  * in place and becomes part of the constructed object. It is not cloned.
  * If no data is provided, the constructed object will be empty, but still
- * valid.
+ * valid.可选的初始数组，一般从服务器的回复中获取，或者直接用js构造，数组用在合适的地方，变成构建的对象的一部分，不是克隆产生的，如果没有数据可以被提供，构建的数据是空的，但还是有效的
  * @extends {jspb.Message}
  * @constructor
  */
@@ -46,7 +46,7 @@ if (goog.DEBUG && !COMPILED) {
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
 /**
- * Creates an object representation of this proto.
+ * Creates an object representation of this proto.创建这个协议的对象表示
  * Field names that are reserved in JavaScript and will be renamed to pb_name.
  * Optional fields that are not set will be set to undefined.
  * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
@@ -87,7 +87,7 @@ proto.darcher.TxErrorMsg.toObject = function(includeInstance, msg) {
 
 
 /**
- * Deserializes binary data (in protobuf wire format).
+ * Deserializes binary data (in protobuf wire format). 
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.darcher.TxErrorMsg}
  */
@@ -100,7 +100,7 @@ proto.darcher.TxErrorMsg.deserializeBinary = function(bytes) {
 
 /**
  * Deserializes binary data (in protobuf wire format) from the
- * given reader into the given message object.
+ * given reader into the given message object. 
  * @param {!proto.darcher.TxErrorMsg} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
  * @return {!proto.darcher.TxErrorMsg}
@@ -134,7 +134,7 @@ proto.darcher.TxErrorMsg.deserializeBinaryFromReader = function(msg, reader) {
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format).
+ * Serializes the message to binary data (in protobuf wire format). 序列化信息到二进制数据，以protobuf的形式
  * @return {!Uint8Array}
  */
 proto.darcher.TxErrorMsg.prototype.serializeBinary = function() {
@@ -145,7 +145,7 @@ proto.darcher.TxErrorMsg.prototype.serializeBinary = function() {
 
 
 /**
- * Serializes the given message to binary data (in protobuf wire
+ * Serializes the given message to binary data (in protobuf wire 
  * format), writing to the given BinaryWriter.
  * @param {!proto.darcher.TxErrorMsg} message
  * @param {!jspb.BinaryWriter} writer

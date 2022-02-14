@@ -5,7 +5,7 @@ export enum MsgType {
     TEST = "test",
 }
 
-// sent from background to content-script
+// sent from background to content-script 从背景发送到内容脚本的msg
 export interface RequestMsg {
     type: MsgType.REQUEST
     requestType: "indexedDB" | "html"
