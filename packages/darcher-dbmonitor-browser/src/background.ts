@@ -103,7 +103,7 @@ class Master {
     private async processTestMsg(msg: TestMsg): Promise<any> {
         switch (msg.testType) {
             case "fetch-html":
-                // simulate a RequestMsg
+                // simulate a RequestMsg 模仿请求信息
                 const requestMsg = <RequestMsg>{
                     type: MsgType.REQUEST,
                     requestType: "html",
@@ -155,7 +155,7 @@ class Master {
     }
 
     /**
-     * Send message to content-script to get DApp state 
+     * Send message to content-script to get DApp state 获取dapp的状态
      * @return the serialized {@link DBContent}
      */
     private async getDAppState(address: string, msg: RequestMsg): Promise<Uint8Array> {
@@ -196,8 +196,8 @@ class Master {
                     // get all db data and send to darcher via websocket
                     let requestMsg: RequestMsg;
                     if (controlMsg.getDbName().toLowerCase() === "html") {
-                        // we use "html" as a special indication of use html mode to fetch DApp state
-                        // the config for html mode is delivered in ControlMsg.Data
+                        // we use "html" as a special indication of use html mode to fetch DApp state 使用html模式获取dapp的状态
+                        // the config for html mode is delivered in ControlMsg.Data html模式的设置
                         let payload: string;
                         if (typeof controlMsg.getData() === "string") {
                             payload = controlMsg.getData() as string;
@@ -279,7 +279,7 @@ function connectWs() {
         ws.send(response.serializeBinary());
     };
     ws.onclose = () => {
-        // when connection is closed, try to re-connect
+        // when connection is closed, try to re-connect 
         Logger.info("Websocket connection with darcher closed");
         setTimeout(() => {
             Logger.info("Reconnect websocket with darcher");

@@ -6,7 +6,7 @@ export enum ControllerOptions {
 }
 
 export interface ClusterConfig {
-    analyzerAddress?: string // address to the analyzer grpc endpoint
+    analyzerAddress?: string // address to the analyzer grpc endpoint grpc端点的地址
     ethmonitorPort: number
     controller: ControllerOptions
     genesisFile: string

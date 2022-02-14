@@ -55,7 +55,7 @@ $(function () {
         reader.readAsText(e.target.files[0]);
     });
 
-    // handle button click events
+    // handle button click events 处理按键点击事件
     $("#refresh-btn").on("click", () => {
         // send refresh request to background
         const config: Config = configEditor.getContent() as Config;
