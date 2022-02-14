@@ -12,12 +12,12 @@ class DAppStateFetcher {
     }
 
     /**
-     * start to listen chrome extension messages from background.js
+     * start to listen chrome extension messages from background.js 注意浏览器拓展的信息
      */
     public start() {
         // handle db queries
         chrome.runtime.onMessage.addListener((message: RequestMsg, sender, sendResponse) => {
-            // only RequestMsg will be sent from background to content-script
+            // only RequestMsg will be sent from background to content-script 请求信息发送到content-script
             this.processRequestMsg(message).then(reply => {
                 sendResponse(reply);
             });
@@ -27,7 +27,7 @@ class DAppStateFetcher {
 
     /**
      * Process the {@link RequestMsg}
-     * if request type is to get all data, returns the serialized (Uint8Array) DBContent
+     * if request type is to get all data, returns the serialized (Uint8Array) DBContent 
      * @param msg
      * @private
      */
@@ -39,7 +39,7 @@ class DAppStateFetcher {
                     return undefined;
                 }
                 if (!(msg.dbName in this.dbFetcherMap)) {
-                    // if dbName does not exist in dbFetcherMap, create one
+                    // if dbName does not exist in dbFetcherMap, create one 
                     this.dbFetcherMap[msg.dbName] = new DBFetcher(msg.dbName);
                 }
                 Logger.info(`Get FetchDAppState request, dbName=${msg.dbName}`);
@@ -80,7 +80,7 @@ class DAppStateFetcher {
     }
 
     /**
-     * Get the innerHTML value of a xpath node
+     * Get the innerHTML value of a xpath node 根据xpath获取innerhtml值
      * This function always returns a string
      * @param xpath
      * @private

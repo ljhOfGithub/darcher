@@ -39,7 +39,7 @@ class Master {
         // update tab in this.tabs when it is updated 更新标签页
         chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             if (tab.status === "complete") {
-                // only register the tab when it is complete
+                // only register the tab when it is complete 标签完成后再注册标签
                 this.registerTab(tab);
             } else {
                 this.unregisterTab(tabId);
@@ -59,19 +59,19 @@ class Master {
      */
     private registerTab(tab: Tab) {
         if (!tab) {
-            // if tab is invalid
+            // if tab is invalid 如果标签无效
             return;
         }
 
         const url = tab.url;
         if (!url) {
-            // if url is empty
+            // if url is empty 如果地址空
             return;
         }
 
-        // get the address of the tab: domain+port 
+        // get the address of the tab: domain+port 域名加端口
         const address = getDomainAndPort(url).trim();
-        // put the tab in the list of addresses
+        // put the tab in the list of addresses 标签加到地址列表
         if (this.tabs[address]) {
             if (!this.tabs[address].some(t => t.id === tab.id)) {
                 // push in the array if not exist
@@ -85,7 +85,7 @@ class Master {
     }
 
     /**
-     * Unregister a new tab
+     * Unregister a new tab 取消注册标签
      * @param tabId
      * @private
      */
@@ -125,8 +125,8 @@ class Master {
     }
 
     /**
-     * Refresh all the tabs with the address
-     * The promise will resolve when all refresh finish
+     * Refresh all the tabs with the address 用地址刷新所有标签
+     * The promise will resolve when all refresh finish 所有刷新完成则结束
      * 刷新所有的标签
      * @param address
      * @private
@@ -155,7 +155,7 @@ class Master {
     }
 
     /**
-     * Send message to content-script to get DApp state
+     * Send message to content-script to get DApp state 
      * @return the serialized {@link DBContent}
      */
     private async getDAppState(address: string, msg: RequestMsg): Promise<Uint8Array> {
@@ -165,7 +165,7 @@ class Master {
                 // no tab available
                 reject(Error.SERVICENOTAVAILABLEERR);
             }
-            // currently we only send request to the latest tab of this address
+            // currently we only send request to the latest tab of this address 发送请求给该地址的最新一个标签
             // TODO need to handle multiple tabs for the same DApp
             const tab = tabs[tabs.length - 1];
             // response from tab should be the serialized (Uint8Array) DBContent
