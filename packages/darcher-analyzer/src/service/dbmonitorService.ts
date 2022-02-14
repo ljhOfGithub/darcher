@@ -59,7 +59,7 @@ export class DbMonitorService implements Service {
             return await this.wsTransport.getAllData(dbAddress, dbName, data);
         } catch (e) {
             if (e.code === DarcherErrorCode.ServiceNotAvailable) {
-                // ws transport is not available, try grpc transport, throw any error this time 
+                // ws transport is not available, try grpc transport, throw any error this time 如果两个服务都不能访问则报错
                 let request = new GetAllDataControlMsg();
                 request.setRole(Role.DBMONITOR).setId(getUUID()).setDbAddress(dbAddress).setDbName(dbName);
                 let resp = await this.grpcTransport.getAllData(request);
@@ -87,7 +87,7 @@ class DBMonitorServiceViaWebsocket implements Service {
     // connection with dbmonitor
     private conn: WebSocket;
     // reverse rpc pending calls
-    private readonly pendingCalls: { [id: string]: PromiseKit<any> }; // map from call id to promise resolve/reject functions
+    private readonly pendingCalls: { [id: string]: PromiseKit<any> }; // map from call id to promise resolve/reject functions 
 
     private emitter: EventEmitter;
 

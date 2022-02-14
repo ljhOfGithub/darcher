@@ -53,7 +53,7 @@ export class DappTestDriverService implements IDAppTestDriverServiceServer, Serv
     }
 
     /**
-     * grpc dappDriverControl, to establish reverse rpc
+     * grpc dappDriverControl, to establish reverse rpc 反向rpc
      * @param call
      */
     dappDriverControl(call: ServerDuplexStream<DAppDriverControlMsg, DAppDriverControlMsg>): void {

@@ -52,7 +52,7 @@ export class DarcherServer extends Server implements Service {
         this.logger.info(`Darcher websocket started`, {port: this.websocketPort});
         await this.dappTestDriverService.start();
 
-        // start grpc services
+        // start grpc services 
         this.logger.info(`Darcher grpc server started`, {port: this.grpcPort});
         super.start();
     }
@@ -93,7 +93,7 @@ export class MockDarcherServer extends DarcherServer {
         // for now we do not use wsPort, so just give a random port
         super(logger, config.analyzer.grpcPort, config.analyzer.wsPort);
         this.config = config;
-        // register dappTestDriverService handler
+        // register dappTestDriverService handler 
         this.dappTestDriverService.waitForEstablishment().then(this.dappTestDriverServiceTestControl.bind(this));
 
         // dbmonitor-browser test logic
@@ -158,7 +158,7 @@ export class MockDarcherServer extends DarcherServer {
             try {
                 let content = await this.dbMonitorService.getAllData(this.config.dbMonitor.dbAddress, this.config.dbMonitor.dbName);
                 if (response.value !== "") {
-                    // if file name is not empty, save to json file in data/*.json
+                    // if file name is not empty, save to json file in data/*.json 
                     fs.writeFileSync(path.join(__dirname, "..", "..", "data", `${response.value}.json`), JSON.stringify(content.toObject(), null, 2));
                     this.logger.info(`dbContent saved to  ${response.value}.json`);
                 }else {
