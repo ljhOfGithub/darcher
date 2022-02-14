@@ -39,12 +39,12 @@ $(function () {
     const configEditor = new JsonEditor("#config-editor");
     const notifier = new MessageNotifier("#message");
 
-    // get the previously saved storage config
+    // get the previously saved storage config 加载原来存储的内存设置
     chrome.storage.local.get("config", value => {
         configEditor.setContent(value.config);
     })
 
-    // handle the uploaded config file
+    // handle the uploaded config file 处理没上传的设置文件
     $("#config-file").on("change", e => {
         let reader = new FileReader();
         reader.onload = (readEvent) => {
