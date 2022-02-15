@@ -145,12 +145,12 @@ export class DBChangeOracle implements Oracle {
 
     getBugReports(): Report[] {
         let reports: Report[] = [];
-        // we will consider DBContent at CREATED state to be the base-line 在初创状态考虑数据库内容作为基准
+        // we will consider DBContent at CREATED state to be the base-line 考虑在初创状态的数据库内容作为基准
         let created: DBContent = this.contentMap[LogicalTxState.CREATED];
         let pending: DBContent = this.contentMap[LogicalTxState.PENDING];
         let confirmed: DBContent = this.contentMap[LogicalTxState.CONFIRMED];
         let removed: DBContent = this.contentMap[LogicalTxState.REMOVED];
-        let createdConfirmedDiff: DBContentDiff = new DBContentDiff(created, confirmed, this.filter);
+        let createdConfirmedDiff: DBContentDiff = new DBContentDiff(created, confirmed, this.filter);//对比两种交易状态的数据库内容
         let removedConfirmedDiff: DBContentDiff = new DBContentDiff(removed, confirmed, this.filter)
         let pendingRemovedDiff = new DBContentDiff(pending, removed, this.filter);
         let pendingConfirmedDiff: DBContentDiff = new DBContentDiff(pending, confirmed, this.filter);
@@ -236,7 +236,7 @@ class UnreliableTxHashReport implements Report {
 }
 
 /**
- * Bug reports for DataInconsistency type
+ * Bug reports for DataInconsistency type 数据不一致错误
  */
 class DataInconsistencyReport implements Report {
     private readonly _txHash: string;
@@ -276,7 +276,7 @@ export interface TableContentDiffFilter {
     // specify the fields needed to compare in DBContents, if not specified, compare all 指定数据库内容需要比较的字段
     includes?: FieldPathSet;
     // specify the fields needed to be excluded from comparison, if not specified, exclude none 指定需要排除比较的字段
-    // rules in excludes can exclude the fields specified in includes
+    // rules in excludes can exclude the fields specified in includes 排除规则可以排除包含规则里的域
     excludes?: FieldPathSet;
 }
 
@@ -347,12 +347,12 @@ export class DBContentDiff {
             }
 
             if (this.filter.excludes && this.filter.excludes.includes(tableName)) {
-                // table is excluded 
+                // table is excluded 表格被排除
                 return;
             }
 
             if (this.filter.includes && !this.filter.includes.includes(tableName)) {
-                // table includes is specified but tableName is not among them 
+                // table includes is specified but tableName is not among them 指定包含的表格，但是tableName被上条规则排除
                 return;
             }
 
@@ -416,7 +416,7 @@ export class TableContentDiff {
     private calDiff() {
         let fromRecords: TableRecord[] = [];
         let toRecords: TableRecord[] = [];
-        // convert to list of TableRecord
+        // convert to list of TableRecord 转换为表格记录对象的列表
         for (let f_r of this.from.getEntriesList()) {
             fromRecords.push(new TableRecord(this.from.getKeypathList(), f_r, this.filter));
         }
@@ -424,7 +424,7 @@ export class TableContentDiff {
             toRecords.push(new TableRecord(this.to.getKeypathList(), t_r, this.filter));
         }
 
-        // calculate diff
+        // calculate diff 计算差别
         const _deletedRecords = _.differenceWith(fromRecords, toRecords, (f, t) => f.sameKeyAs(t));
         const _addedRecords = _.differenceWith(toRecords, fromRecords, (f, t) => f.sameKeyAs(t));
         this._deletedRecords = _.differenceWith(_deletedRecords, _addedRecords, (d, a) => _.isEqual(d.filteredData, a.filteredData));
@@ -434,7 +434,7 @@ export class TableContentDiff {
         for (let f of fromRecords) {
             for (let t of toRecords) {
                 if (f.sameKeyAs(t) && !f.equalTo(t)) {
-                    // changed records are those with same key but not equal
+                    // changed records are those with same key but not equal 改变的记录是那些有相同键值但是值不完全相同的
                     this._changedRecords.push(new TableRecordChange(f, t));
                 }
             }
@@ -481,7 +481,7 @@ export class TableRecordChange {
 }
 
 /**
- * One entry in each table 
+ * One entry in each table 每个表格的一个条目
  */
 export class TableRecord {
     public readonly keyPath: string[];
@@ -506,7 +506,7 @@ export class TableRecord {
     }
 
     /**
-     * If another TableRecord has the same key as this.
+     * If another TableRecord has the same key as this. 如果其他表格记录对象有相同的键
      * @param another
      */
     public sameKeyAs(another: TableRecord): boolean {
@@ -568,7 +568,7 @@ export class TableRecord {
 
         const selectFields = (data: { [key: string]: string }, includes: FieldPathSet): { [key: string]: string } => {
             if (!includes) {
-                // if includes are not specified, include all
+                // if includes are not specified, include all 包含指定域
                 return _.cloneDeep(data);
             }
             let newData = {};
@@ -584,7 +584,7 @@ export class TableRecord {
         }
 
         if (this.filter.includes) {
-            // includes are specified, we construct thisData and anotherData using included fields
+            // includes are specified, we construct thisData and anotherData using included fields 
             thisData = selectFields(thisData, this.filter.includes);
         }
 
@@ -664,7 +664,7 @@ export class TxErrorOracle implements Oracle {
 }
 
 /**
- * Bug reports for TxError type
+ * Bug reports for TxError type 
  */
 class TxErrorReport implements Report {
     private readonly _txHash: string;
