@@ -35,7 +35,7 @@ export class EthmonitorControllerService implements IEthmonitorControllerService
 
     get handler(): EthmonitorController {
         return this._handler;
-    }
+    }// 返回监控控制器
 
     set handler(value: EthmonitorController) {
         this._handler = value;
@@ -52,7 +52,7 @@ export class EthmonitorControllerService implements IEthmonitorControllerService
     waitForEstablishment(): Promise<void> {
         return Promise.resolve(undefined);
     }
-
+    
     askForNextState(call: ServerUnaryCall<TxStateControlMsg>, callback: sendUnaryData<TxStateControlMsg>): void {
         if (this.handler === undefined || !this.handler.askForNextState) {
             let reply = call.request;

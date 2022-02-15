@@ -5,7 +5,7 @@ import * as _ from "lodash";
 import {ControlMsg, DBContent, RequestType} from "./rpc/dbmonitor_service_pb";
 import {Error} from "./rpc/common_pb";
 import {cat} from "shelljs";
-
+//详细用于各个dapp的browser插件
 class Master {
     // active tabs with address as their key, each address may have multiple tabs 把地址作为他们的关键字唤醒标签，每个地址可能有多个标签
     private readonly tabs: { [address: string]: Tab[] };

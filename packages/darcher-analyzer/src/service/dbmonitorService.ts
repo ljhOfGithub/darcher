@@ -87,7 +87,7 @@ class DBMonitorServiceViaWebsocket implements Service {
     // connection with dbmonitor
     private conn: WebSocket;
     // reverse rpc pending calls
-    private readonly pendingCalls: { [id: string]: PromiseKit<any> }; // map from call id to promise resolve/reject functions 
+    private readonly pendingCalls: { [id: string]: PromiseKit<any> }; // map from call id to promise resolve/reject functions 从调用的id映射到promise函数
 
     private emitter: EventEmitter;
 
@@ -250,7 +250,7 @@ class DBMonitorServiceViaGRPC implements IDBMonitorServiceServer, Service {
     }
 
     /**
-     * Establish getAllDataControl reverse rpc
+     * Establish getAllDataControl reverse rpc 建立反向rpc
      * @param call
      */
     getAllDataControl(call: ServerDuplexStream<GetAllDataControlMsg, GetAllDataControlMsg>): void {
@@ -258,7 +258,7 @@ class DBMonitorServiceViaGRPC implements IDBMonitorServiceServer, Service {
             this.logger.warn("getAllDataControlReverseRPC already established, ignore new request");
             return
         }
-        // serve the initial call
+        // serve the initial call 回复初始调用
         this.logger.info("getAllDataControl reverse RPC connected");
         this.getAllDataControlReverseRPC.establish(call);
     }

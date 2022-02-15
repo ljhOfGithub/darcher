@@ -17,7 +17,7 @@ export enum VulnerabilityType {
 }
 
 /**
- * Each oracle instance should only be used for one transaction.
+ * Each oracle instance should only be used for one transaction.判断准则
  * 每个准则实例只用于一个交易
  */
 export interface Oracle {
@@ -28,7 +28,7 @@ export interface Oracle {
      */
     isBuggy(): boolean;
 
-    getBugReports(): Report[];
+    getBugReports(): Report[];//报告对象数组
 
     /**
      * This method should be called only when transaction is at each transaction state.处于每个交易状态时才调用
@@ -62,7 +62,7 @@ export interface Report {
 
     severity(): Severity
 }
-
+//分析交易的log
 export function analyzeTransactionLog(oracle: Oracle, log: TransactionLog): Report[] {
     function loadDBContent(obj: DBContent.AsObject): DBContent {
         let content = new DBContent();
@@ -145,7 +145,7 @@ export class DBChangeOracle implements Oracle {
 
     getBugReports(): Report[] {
         let reports: Report[] = [];
-        // we will consider DBContent at CREATED state to be the base-line
+        // we will consider DBContent at CREATED state to be the base-line 在初创状态考虑数据库内容作为基准
         let created: DBContent = this.contentMap[LogicalTxState.CREATED];
         let pending: DBContent = this.contentMap[LogicalTxState.PENDING];
         let confirmed: DBContent = this.contentMap[LogicalTxState.CONFIRMED];
@@ -156,7 +156,7 @@ export class DBChangeOracle implements Oracle {
         let pendingConfirmedDiff: DBContentDiff = new DBContentDiff(pending, confirmed, this.filter);
         if (!createdConfirmedDiff.zero()) {
             if (pendingConfirmedDiff.zero()) {
-                // DBContent at pending state should not be equal with confirmed state if created state and confirmed state is different. 
+                // DBContent at pending state should not be equal with confirmed state if created state and confirmed state is different. pending状态的数据库内容不应该和confirmed状态的等效，如果初创状态和确认状态不一样
                 reports.push(new UnreliableTxHashReport(
                     this.txHash,
                     LogicalTxState.PENDING,
@@ -176,7 +176,7 @@ export class DBChangeOracle implements Oracle {
         }
 
         if (!pendingRemovedDiff.zero()) {
-            // DBContent in tx pending state should be equal to that in tx removed state (High).
+            // DBContent in tx pending state should be equal to that in tx removed state (High).交易的pending状态的数据库内容应该和removed状态的数据库内容等效
             reports.push(new DataInconsistencyReport(
                 this.txHash,
                 LogicalTxState.REMOVED,
@@ -322,7 +322,7 @@ export class DBContentDiff {
             }
             let toTable = this.to.getTablesMap().get(tableName);
 
-            // handle wildcard rules
+            // handle wildcard rules 处理通配符规则
             let tableFilter: TableContentDiffFilter | undefined = this.filter[tableName];
             if (this.filter["*"]) {
                 const filterForAll = this.filter["*"];
@@ -347,12 +347,12 @@ export class DBContentDiff {
             }
 
             if (this.filter.excludes && this.filter.excludes.includes(tableName)) {
-                // table is excluded
+                // table is excluded 
                 return;
             }
 
             if (this.filter.includes && !this.filter.includes.includes(tableName)) {
-                // table includes is specified but tableName is not among them
+                // table includes is specified but tableName is not among them 
                 return;
             }
 
