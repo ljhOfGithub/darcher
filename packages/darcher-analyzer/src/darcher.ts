@@ -82,7 +82,7 @@ export class Darcher {
     }
 
     /**
-     * Start the Darcher and returns a promise which resolves when the darcher is started and rejects when error
+     * Start the Darcher and returns a promise which resolves when the darcher is started and rejects when error 开始
      * 
      */
     public async start(): Promise<void> {
@@ -142,7 +142,7 @@ export class Darcher {
     private async onTxFinished(msg: TxFinishedMsg) {
         if (msg.getHash() in this.analyzers) {
             await this.analyzers[msg.getHash()].onTxFinished(msg);
-            // we set current Analyzer 1 sec later, in case some transactions comes as a child of current transaction
+            // we set current Analyzer 1 sec later, in case some transactions comes as a child of current transaction 防止一些交易作为现有交易的子交易
             setTimeout(() => {
                 if (this.currentAnalyzer && msg.getHash() === this.currentAnalyzer.txHash) {
                     this.currentAnalyzer = null;
@@ -179,7 +179,7 @@ export class Darcher {
                 return selected;
             }
         } else {
-            // no current analyzer, select from pending analyzers
+            // no current analyzer, select from pending analyzers 从等待的分析器中选择
             for (const tx in this.analyzers) {
                 const analyzer = this.analyzers[tx];
                 if (!analyzer.finished && msg.getCandidateHashesList().includes(tx)) {
@@ -279,7 +279,7 @@ export class Darcher {
                             child: prettifyHash(childHash),
                             parent: prettifyHash(parentHash)
                         });
-                        // the argument of analyzer.waitForTxProcess is not used, so it is safe to pass null
+                        // the argument of analyzer.waitForTxProcess is not used, so it is safe to pass null 
                         await analyzer.waitForTxProcess(null);
                         await waitForChildTxProcess(childHash);
                         this.logger.debug("Child transaction process complete", {
